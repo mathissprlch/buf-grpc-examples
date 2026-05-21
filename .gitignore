@@ -1,0 +1,20 @@
+# Generated code (run `make generate`)
+/gen/
+
+# Locally installed plugins/binaries (run `make install`)
+/tools/_bin/
+/tools/_jars/
+
+# Node
+/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Kotlin / Gradle
+/examples/kotlin/build/
+/examples/kotlin/.gradle/
+
+# Go
+/vendor/

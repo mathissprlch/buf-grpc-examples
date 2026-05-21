@@ -1,0 +1,63 @@
+version: v2
+clean: true
+managed:
+  enabled: true
+  override:
+    - file_option: go_package_prefix
+      value: github.com/mathissprlch/buf-grpc-examples/gen/go
+    - file_option: java_multiple_files
+      value: true
+plugins:
+  # ----- Go: protobuf messages + gRPC + Connect -----
+  - local: tools/_bin/protoc-gen-go
+    out: gen/go
+    opt: paths=source_relative
+  - local: tools/_bin/protoc-gen-go-grpc
+    out: gen/go
+    opt: paths=source_relative
+  - local: tools/_bin/protoc-gen-connect-go
+    out: gen/go
+    opt: paths=source_relative
+
+  # ----- Python: protobuf messages + gRPC (official grpcio) -----
+  # protoc's Python generators are builtins, so they are driven through the
+  # local bridge in tools/protoc_builtin_bridge.py (see that file for why).
+  - local:
+      - python3
+      - tools/protoc_builtin_bridge.py
+      - --protoc
+      - grpc_tools
+      - python
+      - grpc_python
+      - pyi
+    out: gen/python
+
+  # ----- TypeScript: messages + service descriptors (Connect-ES) -----
+  # The Connect-ES runtime speaks the Connect, gRPC, and gRPC-Web protocols
+  # from this same generated code.
+  - local: node_modules/.bin/protoc-gen-es
+    out: gen/ts
+    opt: target=ts
+
+  # ----- Kotlin: Java + Kotlin messages, gRPC (java+kotlin), Connect -----
+  - local:
+      - python3
+      - tools/protoc_builtin_bridge.py
+      - --protoc
+      - tools/_bin/protoc
+      - java
+      - kotlin
+    out: gen/kotlin
+  - local: tools/_bin/protoc-gen-grpc-java
+    out: gen/kotlin
+  - local:
+      - java
+      - -jar
+      - tools/_jars/protoc-gen-grpc-kotlin.jar
+    out: gen/kotlin
+  - local:
+      - java
+      - -jar
+      - tools/_jars/protoc-gen-connect-kotlin.jar
+    out: gen/kotlin
+    opt: generator=java

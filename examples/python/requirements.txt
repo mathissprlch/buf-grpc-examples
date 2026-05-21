@@ -1,0 +1,6 @@
+# Build-time: grpcio-tools provides the bundled protoc that the local bridge
+# (tools/protoc_builtin_bridge.py) drives to emit official Python + gRPC stubs.
+grpcio-tools==1.80.0
+# Runtime: importing/serving the generated stubs.
+grpcio==1.80.0
+protobuf>=6.30.0,<7.0.0

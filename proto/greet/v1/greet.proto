@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package greet.v1;
+
+// GreetService is a tiny example service used to exercise code generation
+// across every language/framework target in this repo.
+service GreetService {
+  // Greet returns a greeting for the given name.
+  rpc Greet(GreetRequest) returns (GreetResponse) {}
+}
+
+message GreetRequest {
+  string name = 1;
+}
+
+message GreetResponse {
+  string greeting = 1;
+}
